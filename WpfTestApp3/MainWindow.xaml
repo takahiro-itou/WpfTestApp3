@@ -6,7 +6,28 @@
         xmlns:local="clr-namespace:WpfTestApp3"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10">
+            <Label Content="Title:" VerticalAlignment="Center" />
+            <TextBox x:Name="TitleTextBox" Width="200" Margin="5,0" />
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Margin="10">
+            <Button Content="Save" Width="80" Margin="5"
+                    Click="OnSaveButtonClick" />
+            <Button Content="Clear" Width="80" Margin="5"
+                    Click="OnClearButtonClick" />
+        </StackPanel>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Memo:" />
+            <TextBox x:Name="ContentTextBox" Grid.Row="1"
+                     AcceptsReturn="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Visible" />
+        </Grid>
 
-    </Grid>
+    </DockPanel>
 </Window>

@@ -20,5 +20,26 @@ namespace WpfTestApp3
         {
             InitializeComponent();
         }
+
+        private void OnSaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            string title = TitleTextBox.Text;
+            string content = ContentTextBox.Text;
+
+            MessageBox.Show($"メモを保存しました（ダミー）\n\nTitle: {title}\nContent: {content}",
+                "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void OnClearButtonClick(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("内容をクリアしますか？", "Confirm",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if ( result == MessageBoxResult.Yes )
+            {
+                TitleTextBox.Clear();
+                ContentTextBox.Clear();
+            }
+        }
     }
 }
