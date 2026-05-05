@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace WpfTestApp3
 {
-    internal class SimpleCommand : ICommand
+    public class SimpleCommand : ICommand
     {
         private readonly Action<object?> _execute;
         private readonly Predicate<object?>? _canExecute;
