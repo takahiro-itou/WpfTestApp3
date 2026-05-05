@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using WpfTestApp3.Commands;
+using WpfTestApp3.Models;
 
-namespace WpfTestApp3
+namespace WpfTestApp3.ViewModels
 {
     public class CounterViewModel : INotifyPropertyChanged
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WpfTestApp3
+namespace WpfTestApp3.Commands
 {
     public class SimpleCommand : ICommand
     {

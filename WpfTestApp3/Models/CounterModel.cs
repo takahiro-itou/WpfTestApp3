@@ -1,5 +1,4 @@
-﻿
-namespace WpfTestApp3
+﻿namespace WpfTestApp3.Models
 {
     public class CounterModel
     {
