@@ -10,14 +10,33 @@
         <TextBlock Text="データバインディング"
                    FontSize="16" FontWeight="Bold"
                    HorizontalAlignment="Center" Margin="0,0,0,15" />
+
         <GroupBox Header="人物情報" Margin="0,0,0,10">
             <StackPanel Margin="5">
-                <TextBlock Text="{Binding Name, StringFormat='名前: {0}'}" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="名前:" Width="60" />
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                             Width="200" Height="25" />
+                </StackPanel>
+
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <TextBlock Text="{Binding Age, StringFormat='年齢: {0}'}" />
                     <Button Content="-" Width="20" Height="20" Margin="10,0,5,0" Click="OnDecrementAge" />
                     <Button Content="+" Width="20" Height="20" Margin="5,0,0,0" Click="OnIncrementAge" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="職業:" Width="60" />
+                    <TextBox Text="{Binding Job, UpdateSourceTrigger=PropertyChanged}"
+                             Width="200" Height="25" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+
+        <GroupBox Header="人物情報 (現在のデータを表示)" Margin="0,0,0,15">
+            <StackPanel Margin="5">
+                <TextBlock Text="{Binding Name, StringFormat='名前: {0}'}" />
+                <TextBlock Text="{Binding Age, StringFormat='年齢: {0}'}" />
                 <TextBlock Text="{Binding Job, StringFormat='職業: {0}'}" />
             </StackPanel>
         </GroupBox>
