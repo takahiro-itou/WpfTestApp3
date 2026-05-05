@@ -23,6 +23,7 @@ namespace WpfTestApp3
         public CounterWindow()
         {
             InitializeComponent();
+            DataContext = new CounterViewModel();
         }
     }
 }

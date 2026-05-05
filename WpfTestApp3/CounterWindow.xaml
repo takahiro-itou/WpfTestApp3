@@ -8,6 +8,25 @@
         mc:Ignorable="d"
         Title="CounterWindow" Height="450" Width="800">
     <Grid>
+        <StackPanel Margin="20" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Count, StringFormat='Count: {0}'}"
+                       FontSize="24"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="－"
+                        Command="{Binding DecrementCommand}"
+                        Width="40" Height="30" />
+                <Button Content="＋"
+                        Command="{Binding IncrementCommand}"
+                        Width="40" Height="30" />
+            </StackPanel>
+
+            <TextBlock Text="「－」ボタンは0以下で自動無効化されます"
+                       HorizontalAlignment="Center"
+                       Margin="0,15,0,0" />
+        </StackPanel>
 
     </Grid>
 </Window>
