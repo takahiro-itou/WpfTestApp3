@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfTestApp3
+namespace WpfTestApp3.Views
 {
     /// <summary>
     /// CounterWindow.xaml の相互作用ロジック
@@ -23,7 +23,7 @@ namespace WpfTestApp3
         public CounterWindow()
         {
             InitializeComponent();
-            DataContext = new CounterViewModel();
+            DataContext = new WpfTestApp3.ViewModels.CounterViewModel();
         }
     }
 }

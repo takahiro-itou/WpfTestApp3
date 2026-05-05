@@ -2,18 +2,25 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using WpfTestApp3.Commands;
+using WpfTestApp3.Models;
+using WpfTestApp3.Services;
 
-namespace WpfTestApp3
+namespace WpfTestApp3.ViewModels
 {
     public class CounterViewModel : INotifyPropertyChanged
     {
         private readonly CounterModel _model;
+        private readonly JsonCounterStorage _storage;
         private readonly SimpleCommand _incrementCommand;
         private readonly SimpleCommand _decrementCommand;
 
         public CounterViewModel()
         {
-            _model = new CounterModel();
+            _storage = new JsonCounterStorage();
+            int initialValue = _storage.Load();
+            _model = new CounterModel(initialValue);
+
             _incrementCommand = new SimpleCommand(_ => ExecuteIncrement());
             _decrementCommand = new SimpleCommand(_ => ExecuteDecrement(), _ => _model.CanDecrement());
         }
@@ -27,11 +34,13 @@ namespace WpfTestApp3
         {
             _model.Increment();
             OnPropertyChanged(nameof(Count));
+            _storage.Save(_model.Value);
         }
         public void ExecuteDecrement()
         {
             _model.Decrement();
             OnPropertyChanged(nameof(Count));
+            _storage.Save(_model.Value);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
