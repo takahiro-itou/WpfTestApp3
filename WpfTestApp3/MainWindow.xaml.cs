@@ -19,17 +19,36 @@ namespace WpfTestApp3
         public MainWindow()
         {
             InitializeComponent();
+
+            var person = new Person
+            {
+                Name = "田中太郎",
+                Age = 30,
+                Job = "ソフトウェアエンジニア",
+            };
+            var company = new Company
+            {
+                Name = "株式会社サンプル",
+                Department = "開発部",
+            };
+
+            this.DataContext = person;
+            this.CompanyGroup.DataContext = company;
         }
 
-        private void OnAddButtonClick(object sender, RoutedEventArgs e)
-        {
-            string memo = MemoTextBox.Text;
-            string? category = (CategoryCombobox.SelectedItem as ComboBoxItem)?.Content.ToString();
-            if ( !string.IsNullOrWhiteSpace(memo))
-            {
-                MemoListView.Items.Add($"{memo} ({category})");
-                MemoTextBox.Clear();
-            }
-        }
     }
+
+    public class Person
+    {
+        public required string Name { get; set; }
+        public required int Age { get; set; }
+        public required string Job { get; set; }
+    }
+    public class Company
+    {
+        public required string Name { get; set; }
+        public required string Department { get; set; }
+    }
+
+
 }
