@@ -1,41 +1,43 @@
 ﻿
-namespace WpfTestApp3.Models
+namespace  WpfTestApp3.Models  {
+
+public class CounterModel
 {
-    public class CounterModel
-    {
-        public int Value { get; private set; }
-        public event Action? ValueChanged;
 
-        public CounterModel(int initialValue = 0)
-        {
-            Value = initialValue;
-        }
+public int Value { get; private set; }
+public event Action? ValueChanged;
 
-        private void Notify() => ValueChanged?.Invoke();
+public CounterModel(int initialValue = 0)
+{
+    Value = initialValue;
+}
 
-        public void SetValue(int value)
-        {
-            Value = value;
-            Notify();
-        }
+private void Notify() => ValueChanged?.Invoke();
 
-        public void Increment()
-        {
-            Value ++;
-            Notify();
-        }
+public void SetValue(int value)
+{
+    Value = value;
+    Notify();
+}
 
-        public void Decrement()
-        {
-            if ( !CanDecrement() ) { return; }
-            Value --;
-            Notify();
-        }
+public void Increment()
+{
+    Value ++;
+    Notify();
+}
 
-        public bool CanDecrement()
-        {
-            return Value > 0;
-        }
+public void Decrement()
+{
+    if ( !CanDecrement() ) { return; }
+    Value --;
+    Notify();
+}
 
-    }
+public bool CanDecrement()
+{
+    return Value > 0;
+}
+
+}
+
 }
