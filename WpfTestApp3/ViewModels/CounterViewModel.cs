@@ -153,6 +153,8 @@ raiseCanExecuteChanged()
         () => {
             _decrementCommand.RaiseCanExecuteChanged();
             _asyncDecrementCommand.RaiseCanExecuteChanged();
+            _incrementCommand.RaiseCanExecuteChanged();
+            _asyncIncrementCommand.RaiseCanExecuteChanged();
         }
     );
 
