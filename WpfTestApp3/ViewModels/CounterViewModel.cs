@@ -79,6 +79,7 @@ executeDecrement()
     this._isRunning = true;
     executeDecrementTask(1);
     this._isRunning = false;
+    raiseCanExecuteChanged();
 }
 
 public  async  void
@@ -96,6 +97,7 @@ executeDecrementAsync()
     System.Windows.MessageBox.Show("DecrementAsync");
 
     this._isRunning = false;
+    raiseCanExecuteChanged();
 }
 
 public  void
@@ -104,6 +106,7 @@ executeIncrement()
     this._isRunning = true;
     executeIncrementTask(1);
     this._isRunning = false;
+    raiseCanExecuteChanged();
 }
 
 public  async  void
@@ -121,6 +124,7 @@ executeIncrementAsync()
     System.Windows.MessageBox.Show("IncrementAsync");
 
     this._isRunning = false;
+    raiseCanExecuteChanged();
 }
 
 
@@ -142,6 +146,20 @@ executeIncrementTask(int parameter)
 }
 
 
+protected  virtual  int
+raiseCanExecuteChanged()
+{
+    this._dispatcher.Invoke(
+        () => {
+            _decrementCommand.RaiseCanExecuteChanged();
+            _asyncDecrementCommand.RaiseCanExecuteChanged();
+        }
+    );
+
+    return ( 0 );
+}
+
+
 private void OnCountChanged()
 {
     OnPropertyChanged(nameof(Count));
@@ -154,9 +172,7 @@ OnPropertyChanged([CallerMemberName] string? propertyName = null)
 {
     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     if ( propertyName == nameof(Count) ) {
-        this._dispatcher.Invoke(
-            () => _decrementCommand.RaiseCanExecuteChanged()
-        );
+        raiseCanExecuteChanged();
     }
 }
 
