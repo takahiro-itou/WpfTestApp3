@@ -12,12 +12,14 @@ namespace  WpfTestApp3.ViewModels  {
 public class CounterViewModel : INotifyPropertyChanged
 {
 
-private  readonly   CounterModel _model;
+private  readonly   CounterModel    _model;
 private  readonly   JsonCounterStorage _storage;
-private  readonly   SimpleCommand _incrementCommand;
-private  readonly   SimpleCommand _decrementCommand;
+private  readonly   SimpleCommand   _incrementCommand;
+private  readonly   SimpleCommand   _decrementCommand;
+private  readonly   SimpleCommand   _asyncIncrementCommand;
+private  readonly   SimpleCommand   _asyncDecrementCommand;
 
-private   bool      _isRunning;
+private  bool       _isRunning;
 
 
 public CounterViewModel(CounterModel model, JsonCounterStorage storage)
@@ -30,26 +32,34 @@ public CounterViewModel(CounterModel model, JsonCounterStorage storage)
     _model.ValueChanged += OnCountChanged;
 
     _incrementCommand = new SimpleCommand(
-            _ => executeIncrement());
+            _ => executeIncrement(), _ => canIncrement() );
     _decrementCommand = new SimpleCommand(
-            _ => executeDecrement(), _ => _model.CanDecrement());
+            _ => executeDecrement(), _ => canDecrement() );
+    _asyncIncrementCommand = new SimpleCommand(
+            _ => executeIncrementAsync(), _ => canIncrement() );
+    _asyncDecrementCommand = new SimpleCommand(
+            _ => executeDecrementAsync(), _ => canDecrement() );
+
 
     this._isRunning = false;
 }
 
 public int Count => _model.Value;
 
-public ICommand IncrementCommand => _incrementCommand;
-public ICommand DecrementCommand => _decrementCommand;
+public  ICommand  IncrementCommand => _incrementCommand;
+public  ICommand  DecrementCommand => _decrementCommand;
+public  ICommand  AsyncIncrementCommand => _asyncIncrementCommand;
+public  ICommand  AsyncDecrementCommand => _asyncDecrementCommand;
+
 
 public  virtual  bool
-CanDecrement()
+canDecrement()
 {
     return ( ! this._isRunning && _model.CanDecrement() );
 }
 
 public  virtual  bool
-CanIncrement()
+canIncrement()
 {
     return ( ! this._isRunning );
 }
