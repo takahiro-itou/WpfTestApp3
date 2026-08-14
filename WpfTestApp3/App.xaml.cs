@@ -21,7 +21,8 @@ protected override void OnStartup(StartupEventArgs e)
     var model = new CounterModel();
     var mainWindow = new MainWindow();
 
-    var counterViewModel = new CounterViewModel(model, storage);
+    var counterViewModel = new CounterViewModel(
+            mainWindow.Dispatcher, model, storage);
     var evenOddViewModel = new EvenOddViewModel(model);
 
     mainWindow.CounterView.SetViewModel(counterViewModel);

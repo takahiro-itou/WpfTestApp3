@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 using WpfTestApp3.Commands;
 using WpfTestApp3.Models;
@@ -19,11 +20,18 @@ private  readonly   SimpleCommand   _decrementCommand;
 private  readonly   SimpleCommand   _asyncIncrementCommand;
 private  readonly   SimpleCommand   _asyncDecrementCommand;
 
+private  readonly   Dispatcher      _dispatcher;
+
 private  bool       _isRunning;
 
 
-public CounterViewModel(CounterModel model, JsonCounterStorage storage)
+public
+CounterViewModel(
+       Dispatcher       dispatcher,
+       CounterModel     model,
+       JsonCounterStorage storage)
 {
+    _dispatcher = dispatcher;
     _model = model;
     _storage = storage;
 
