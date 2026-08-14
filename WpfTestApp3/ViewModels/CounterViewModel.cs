@@ -154,7 +154,9 @@ OnPropertyChanged([CallerMemberName] string? propertyName = null)
 {
     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     if ( propertyName == nameof(Count) ) {
-        _decrementCommand.RaiseCanExecuteChanged();
+        this._dispatcher.Invoke(
+            () => _decrementCommand.RaiseCanExecuteChanged()
+        );
     }
 }
 
