@@ -2,64 +2,187 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 using WpfTestApp3.Commands;
 using WpfTestApp3.Models;
 using WpfTestApp3.Services;
 
-namespace WpfTestApp3.ViewModels
+namespace  WpfTestApp3.ViewModels  {
+
+public class CounterViewModel : INotifyPropertyChanged
 {
-    public class CounterViewModel : INotifyPropertyChanged
-    {
-        private readonly CounterModel _model;
-        private readonly JsonCounterStorage _storage;
-        private readonly SimpleCommand _incrementCommand;
-        private readonly SimpleCommand _decrementCommand;
 
-        public CounterViewModel(CounterModel model, JsonCounterStorage storage)
-        {
-            _model = model;
-            _storage = storage;
+private  readonly   CounterModel    _model;
+private  readonly   JsonCounterStorage _storage;
+private  readonly   SimpleCommand   _incrementCommand;
+private  readonly   SimpleCommand   _decrementCommand;
+private  readonly   SimpleCommand   _asyncIncrementCommand;
+private  readonly   SimpleCommand   _asyncDecrementCommand;
 
-            var initialValue = _storage.Load();
-            _model.SetValue(initialValue);
+private  readonly   Dispatcher      _dispatcher;
 
-            _model.ValueChanged += OnCountChanged;
+private  bool       _isRunning;
 
-            _incrementCommand = new SimpleCommand(_ => ExecuteIncrement());
-            _decrementCommand = new SimpleCommand(_ => ExecuteDecrement(), _ => _model.CanDecrement());
-        }
 
-        public int Count => _model.Value;
+public
+CounterViewModel(
+       Dispatcher       dispatcher,
+       CounterModel     model,
+       JsonCounterStorage storage)
+{
+    _dispatcher = dispatcher;
+    _model = model;
+    _storage = storage;
 
-        public ICommand IncrementCommand => _incrementCommand;
-        public ICommand DecrementCommand => _decrementCommand;
+    var initialValue = _storage.Load();
+    _model.SetValue(initialValue);
+    _model.ValueChanged += OnCountChanged;
 
-        public void ExecuteIncrement()
-        {
-            _model.Increment();
-            _storage.Save(_model.Value);
-        }
-        public void ExecuteDecrement()
-        {
-            _model.Decrement();
-            _storage.Save(_model.Value);
-        }
+    _incrementCommand = new SimpleCommand(
+            _ => executeIncrement(), _ => canIncrement() );
+    _decrementCommand = new SimpleCommand(
+            _ => executeDecrement(), _ => canDecrement() );
+    _asyncIncrementCommand = new SimpleCommand(
+            _ => executeIncrementAsync(), _ => canIncrement() );
+    _asyncDecrementCommand = new SimpleCommand(
+            _ => executeDecrementAsync(), _ => canDecrement() );
 
-        private void OnCountChanged()
-        {
-            OnPropertyChanged(nameof(Count));
-        }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+    this._isRunning = false;
+}
 
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            if ( propertyName == nameof(Count) ) {
-                _decrementCommand.RaiseCanExecuteChanged();
-            }
-        }
+public int Count => _model.Value;
 
+public  ICommand  IncrementCommand => _incrementCommand;
+public  ICommand  DecrementCommand => _decrementCommand;
+public  ICommand  AsyncIncrementCommand => _asyncIncrementCommand;
+public  ICommand  AsyncDecrementCommand => _asyncDecrementCommand;
+
+
+public  virtual  bool
+IsRunning {
+    get { return  this._isRunning; }
+    set { this._isRunning = value;
+        raiseCanExecuteChanged();
     }
+}
+
+
+public  virtual  bool
+canDecrement()
+{
+    return ( ! this._isRunning && _model.CanDecrement() );
+}
+
+public  virtual  bool
+canIncrement()
+{
+    return ( ! this._isRunning );
+}
+
+
+public  void
+executeDecrement()
+{
+    this.IsRunning  = true;
+    executeDecrementTask(1);
+    this.IsRunning  = false;
+}
+
+public  async  void
+executeDecrementAsync()
+{
+    this.IsRunning  = true;
+
+    await  System.Threading.Tasks.Task.Delay(1000);
+    Task<int>  task = Task.Run<int>(
+        () => executeDecrementTask(1)
+    );
+    int  result = await task;
+
+    await  System.Threading.Tasks.Task.Delay(1000);
+    System.Windows.MessageBox.Show("DecrementAsync");
+
+    this.IsRunning  = false;
+}
+
+public  void
+executeIncrement()
+{
+    this.IsRunning  = true;
+    executeIncrementTask(1);
+    this.IsRunning  = false;
+}
+
+public  async  void
+executeIncrementAsync()
+{
+    this.IsRunning  = true;
+
+    await  System.Threading.Tasks.Task.Delay(1000);
+    Task<int>  task = Task.Run<int>(
+        () => executeIncrementTask(1)
+    );
+    int  result = await task;
+
+    await  System.Threading.Tasks.Task.Delay(1000);
+    System.Windows.MessageBox.Show("IncrementAsync");
+
+    this.IsRunning  = false;
+}
+
+
+protected  virtual  int
+executeDecrementTask(int parameter)
+{
+    _model.Decrement();
+    _storage.Save(_model.Value);
+    return ( _model.Value );
+}
+
+
+protected  virtual  int
+executeIncrementTask(int parameter)
+{
+    _model.Increment();
+    _storage.Save(_model.Value);
+    return( _model.Value );
+}
+
+
+protected  virtual  int
+raiseCanExecuteChanged()
+{
+    this._dispatcher.Invoke(
+        () => {
+            _decrementCommand.RaiseCanExecuteChanged();
+            _asyncDecrementCommand.RaiseCanExecuteChanged();
+            _incrementCommand.RaiseCanExecuteChanged();
+            _asyncIncrementCommand.RaiseCanExecuteChanged();
+        }
+    );
+
+    return ( 0 );
+}
+
+
+private void OnCountChanged()
+{
+    OnPropertyChanged(nameof(Count));
+}
+
+public  event PropertyChangedEventHandler? PropertyChanged;
+
+protected  void
+OnPropertyChanged([CallerMemberName] string? propertyName = null)
+{
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    if ( propertyName == nameof(Count) ) {
+        raiseCanExecuteChanged();
+    }
+}
+
+}
+
 }

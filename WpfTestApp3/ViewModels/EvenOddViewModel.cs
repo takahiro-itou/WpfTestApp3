@@ -3,30 +3,34 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WpfTestApp3.Models;
 
-namespace WpfTestApp3.ViewModels
+namespace  WpfTestApp3.ViewModels  {
+
+public class EvenOddViewModel : INotifyPropertyChanged
 {
-    public class EvenOddViewModel : INotifyPropertyChanged
-    {
-        private readonly CounterModel _model;
 
-        public EvenOddViewModel(CounterModel model)
-        {
-            _model = model;
-            _model.ValueChanged += OnCountChanged;
-        }
+private readonly CounterModel _model;
 
-        public string EvenOddText => _model.Value % 2 == 0 ? "Even" : "Odd";
+public EvenOddViewModel(CounterModel model)
+{
+    _model = model;
+    _model.ValueChanged += OnCountChanged;
+}
 
-        private void OnCountChanged()
-        {
-            OnPropertyChanged(nameof(EvenOddText));
-        }
+public string EvenOddText => _model.Value % 2 == 0 ? "Even" : "Odd";
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+private void OnCountChanged()
+{
+    OnPropertyChanged(nameof(EvenOddText));
+}
 
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+public event PropertyChangedEventHandler? PropertyChanged;
+
+protected  void
+OnPropertyChanged([CallerMemberName] string? propertyName = null)
+{
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+}
+
+}
+
 }

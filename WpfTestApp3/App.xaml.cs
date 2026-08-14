@@ -5,31 +5,32 @@ using WpfTestApp3.Services;
 using WpfTestApp3.ViewModels;
 using WpfTestApp3.Views;
 
-namespace WpfTestApp3
+namespace  WpfTestApp3  {
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
-    {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
 
-            var storage = new JsonCounterStorage();
+protected override void OnStartup(StartupEventArgs e)
+{
+    base.OnStartup(e);
 
-            var model = new CounterModel();
+    var storage = new JsonCounterStorage();
+    var model = new CounterModel();
+    var mainWindow = new MainWindow();
 
-            var counterViewModel = new CounterViewModel(model, storage);
-            var evenOddViewModel = new EvenOddViewModel(model);
+    var counterViewModel = new CounterViewModel(
+            mainWindow.Dispatcher, model, storage);
+    var evenOddViewModel = new EvenOddViewModel(model);
 
-            var mainWindow = new MainWindow();
-            mainWindow.CounterView.SetViewModel(counterViewModel);
-            mainWindow.EvenOddView.SetViewModel(evenOddViewModel);
+    mainWindow.CounterView.SetViewModel(counterViewModel);
+    mainWindow.EvenOddView.SetViewModel(evenOddViewModel);
 
-            mainWindow.Show();
-        }
+    mainWindow.Show();
+}
 
-    }
+}
 
 }
