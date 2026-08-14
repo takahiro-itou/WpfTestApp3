@@ -78,10 +78,14 @@ executeDecrementAsync()
 {
     this._isRunning = true;
 
+    await  System.Threading.Tasks.Task.Delay(1000);
     Task<int>  task = Task.Run<int>(
         () => executeDecrementTask(1)
     );
     int  result = await task;
+
+    await  System.Threading.Tasks.Task.Delay(1000);
+    System.Windows.MessageBox.Show("DecrementAsync");
 
     this._isRunning = false;
 }
@@ -99,10 +103,14 @@ executeIncrementAsync()
 {
     this._isRunning = true;
 
+    await  System.Threading.Tasks.Task.Delay(1000);
     Task<int>  task = Task.Run<int>(
         () => executeIncrementTask(1)
     );
     int  result = await task;
+
+    await  System.Threading.Tasks.Task.Delay(1000);
+    System.Windows.MessageBox.Show("IncrementAsync");
 
     this._isRunning = false;
 }

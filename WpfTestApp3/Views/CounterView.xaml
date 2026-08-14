@@ -27,6 +27,15 @@
                 Command="{Binding IncrementCommand}"
                 Width="40" Height="30"
                 Margin="5" />
+
+            <Button Content="－ (Async)"
+                Command="{Binding AsyncDecrementCommand}"
+                Width="40" Height="30"
+                Margin="5" />
+            <Button Content="＋ (Async)"
+                Command="{Binding AsyncIncrementCommand}"
+                Width="40" Height="30"
+                Margin="5" />
         </StackPanel>
     </StackPanel>
 </UserControl>
