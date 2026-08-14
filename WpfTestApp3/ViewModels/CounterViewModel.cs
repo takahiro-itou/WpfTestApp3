@@ -61,6 +61,15 @@ public  ICommand  AsyncDecrementCommand => _asyncDecrementCommand;
 
 
 public  virtual  bool
+IsRunning {
+    get { return  this._isRunning; }
+    set { this._isRunning = value;
+        raiseCanExecuteChanged();
+    }
+}
+
+
+public  virtual  bool
 canDecrement()
 {
     return ( ! this._isRunning && _model.CanDecrement() );
@@ -76,16 +85,15 @@ canIncrement()
 public  void
 executeDecrement()
 {
-    this._isRunning = true;
+    this.IsRunning  = true;
     executeDecrementTask(1);
-    this._isRunning = false;
-    raiseCanExecuteChanged();
+    this.IsRunning  = false;
 }
 
 public  async  void
 executeDecrementAsync()
 {
-    this._isRunning = true;
+    this.IsRunning  = true;
 
     await  System.Threading.Tasks.Task.Delay(1000);
     Task<int>  task = Task.Run<int>(
@@ -96,23 +104,21 @@ executeDecrementAsync()
     await  System.Threading.Tasks.Task.Delay(1000);
     System.Windows.MessageBox.Show("DecrementAsync");
 
-    this._isRunning = false;
-    raiseCanExecuteChanged();
+    this.IsRunning  = false;
 }
 
 public  void
 executeIncrement()
 {
-    this._isRunning = true;
+    this.IsRunning  = true;
     executeIncrementTask(1);
-    this._isRunning = false;
-    raiseCanExecuteChanged();
+    this.IsRunning  = false;
 }
 
 public  async  void
 executeIncrementAsync()
 {
-    this._isRunning = true;
+    this.IsRunning  = true;
 
     await  System.Threading.Tasks.Task.Delay(1000);
     Task<int>  task = Task.Run<int>(
@@ -123,8 +129,7 @@ executeIncrementAsync()
     await  System.Threading.Tasks.Task.Delay(1000);
     System.Windows.MessageBox.Show("IncrementAsync");
 
-    this._isRunning = false;
-    raiseCanExecuteChanged();
+    this.IsRunning  = false;
 }
 
 
